@@ -23,7 +23,7 @@
 
 ## Key Features
 
-- **File Upload**: Upload files directly to the server.
+- **File Upload**: Upload files directly to the server or using [ShareX](https://getsharex.com).
 - **File Management**: View, delete, and manage uploaded files.
 - **User Authentication**: Secure login and registration system.
 - **Invite System**: Generate and manage invite codes for user registration.
@@ -81,7 +81,7 @@ run.py
 
 ### Uploading Files
 
-You can upload files directly through the dashboard interface.
+You can upload files directly through the dashboard interface or using [ShareX](https://getsharex.com).
 
 ### Managing Files
 
