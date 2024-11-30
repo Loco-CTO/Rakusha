@@ -1,10 +1,10 @@
 import os
 
-from flask import Blueprint, abort, render_template, send_file
-from flask import current_app
+from flask import Blueprint, abort, current_app, render_template, send_file
 
 from database import db_handler
 from models.page_title import build_title
+
 from .extensions import supported_extensions
 
 view_bp = Blueprint("view", __name__)
