@@ -127,5 +127,4 @@ class User(UserMixin):
         except sqlite3.IntegrityError as e:
             if "UNIQUE constraint failed" in str(e):
                 raise ValueError("A user with this email or username already exists.")
-            else:
-                raise e
+            raise e
