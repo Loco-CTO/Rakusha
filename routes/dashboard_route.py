@@ -1,11 +1,17 @@
 import datetime
 import os
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
-from flask import jsonify
-from flask import session
-from flask_login import current_user
-from flask_login import login_required
+from flask import (
+    Blueprint,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
+from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 
 from database import db_handler
