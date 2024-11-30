@@ -69,7 +69,7 @@ Create a `.env` file in the root directory and add the following:
 SECRET_KEY=your_secret_key
 ```
 
-6. Run the application:
+5. Run the application:
 
 ```bash
 python 
