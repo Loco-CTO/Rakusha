@@ -1,0 +1,165 @@
+{% extends "dashboard_base.html" %} {% block title %}Administration{% endblock
+%} {% block content %}
+<header class="header-bar">
+	<h1>Administration</h1>
+</header>
+<div class="admin-container">
+	<div class="section">
+		<header class="section-title">
+			<h2>All Users</h2>
+		</header>
+		<div class="file-list-container">
+			<table class="file-list-table">
+				<thead>
+					<tr>
+						<th class="file-list-table-title">Username</th>
+						<th class="file-list-table-title">Email</th>
+						<th class="file-list-table-title">Admin</th>
+						<th class="file-list-table-title">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for user in users %}
+					<tr>
+						<td class="file-list-table-item">{{ user.username }}</td>
+						<td class="file-list-table-item">{{ user.email }}</td>
+						<td class="file-list-table-item">{{ user.is_admin }}</td>
+						<td class="actions">
+							<form method="POST" style="display: inline">
+								<button
+									type="button"
+									class="edit-btn"
+									data-user-id="{{ user.id }}"
+									data-username="{{ user.username }}"
+									data-email="{{ user.email }}"
+									data-is-admin="{{ user.is_admin }}"
+								>
+									<i class="fa-solid fa-edit" style="color: #007bff"></i>
+								</button>
+								<button
+									type="submit"
+									name="delete_user"
+									value="{{ user.id }}"
+									class="delete-btn"
+								>
+									<i class="fa-solid fa-trash" style="color: #d01616"></i>
+								</button>
+							</form>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="section">
+		<header class="section-title">
+			<h2>Create Invite Link</h2>
+		</header>
+		<form method="POST">
+			<button type="submit" name="create_invite" class="general-button">
+				Create Invite Link
+			</button>
+		</form>
+	</div>
+
+	<div class="section">
+		<header class="section-title">
+			<h2>All Invites</h2>
+		</header>
+		<div class="file-list-container">
+			<table class="file-list-table">
+				<thead>
+					<tr>
+						<th class="file-list-table-title">Code</th>
+						<th class="file-list-table-title">Link</th>
+						<th class="file-list-table-title">Used</th>
+						<th class="file-list-table-title">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for invite in invites %}
+					<tr>
+						<td class="file-list-table-item">{{ invite.code }}</td>
+						<td class="file-list-table-item">
+							{{ url_for('invite.register', code=invite.code, _external=True) }}
+						</td>
+						<td class="file-list-table-item">{{ invite.used }}</td>
+						<td class="actions">
+							<form method="POST" style="display: inline">
+								<button
+									type="submit"
+									name="delete_invite"
+									value="{{ invite.code }}"
+									class="delete-btn"
+								>
+									<i class="fa-solid fa-trash" style="color: #d01616"></i>
+								</button>
+							</form>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div id="editUserModal" class="modal">
+	<div class="modal-content">
+		<span class="close">&times;</span>
+		<h2>Edit User</h2>
+		<form method="POST">
+			<input type="hidden" name="edit_user" id="edit_user_id" />
+			<div class="form-group">
+				<label for="new_username">Username</label>
+				<input type="text" id="new_username" name="new_username" required />
+			</div>
+			<div class="form-group">
+				<label for="new_email">Email</label>
+				<input type="email" id="new_email" name="new_email" required />
+			</div>
+			<div class="form-group">
+				<label for="is_admin">Admin</label>
+				<input type="checkbox" id="is_admin" name="is_admin" />
+			</div>
+			<button type="submit" class="general-button">Save Changes</button>
+		</form>
+	</div>
+</div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const editButtons = document.querySelectorAll(".edit-btn");
+		const modal = document.getElementById("editUserModal");
+		const closeModal = document.querySelector(".close");
+
+		editButtons.forEach((button) => {
+			button.addEventListener("click", function () {
+				const userId = this.dataset.userId;
+				const username = this.dataset.username;
+				const email = this.dataset.email;
+				const isAdmin = this.dataset.isAdmin === "True";
+
+				document.getElementById("edit_user_id").value = userId;
+				document.getElementById("new_username").value = username;
+				document.getElementById("new_email").value = email;
+				document.getElementById("is_admin").checked = isAdmin;
+
+				modal.style.display = "block";
+			});
+		});
+
+		closeModal.addEventListener("click", function () {
+			modal.style.display = "none";
+		});
+
+		window.addEventListener("click", function (event) {
+			if (event.target === modal) {
+				modal.style.display = "none";
+			}
+		});
+	});
+</script>
+{% endblock %}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{{ pagetitle }}</title>
+		<meta property="og:title" content="{{ filename }}" />
+		<meta
+			property="og:url"
+			content="https://files.rystal.space/storage/{{ filename }}"
+		/>
+		<meta property="og:type" content="document" />
+		<link rel="icon" href="/static/favicon.png" type="image/png" />
+		{{ style|safe }}
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='styles.css') }}"
+		/>
+		<link
+			rel="stylesheet"
+			href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/dark.min.css"
+		/>
+		<link rel="stylesheet" href="/static/code.css" />
+	</head>
+	<body>
+		<div class="text-container">
+			<div class="line-numbers">
+				<pre>{{ line_numbers|safe }}</pre>
+			</div>
+			<div class="text-content">
+				<pre><code class="language-{{ filename.split('.')[-1] }}">{{ file_content|safe }}</code></pre>
+			</div>
+		</div>
+		<div class="button-container">
+			<a href="/storage/{{ filename }}" class="general-button" download
+				>Download</a
+			>
+			<a href="/view/raw/{{ filename }}" class="general-button"> View Raw </a>
+		</div>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+		<script>
+			document.addEventListener("DOMContentLoaded", (event) => {
+				document.querySelectorAll("pre code").forEach((block) => {
+					hljs.highlightBlock(block);
+				});
+			});
+		</script>
+	</body>
+</html>

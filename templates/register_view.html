@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Register</title>
+		<link rel="icon" href="/static/favicon.png" type="image/png" />
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='styles.css') }}"
+		/>
+	</head>
+	<body class="login-page">
+		<div class="menu-container">
+			<div class="login-container">
+				<img
+					src="/static/assets/logo-banner.webp"
+					alt="Logo"
+					class="login-logo"
+				/>
+				<form class="login-form" method="POST">
+					<input type="hidden" name="code" value="{{ code }}" />
+					<label>
+						<input
+							type="text"
+							name="username"
+							placeholder="Username"
+							required
+						/>
+					</label>
+					<label>
+						<input
+							type="password"
+							name="password"
+							placeholder="Password"
+							required
+							pattern="(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}"
+							title="Password must be at least 8 characters long and contain at least one number and one alphabet."
+						/>
+					</label>
+					<button type="submit">Register</button>
+				</form>
+				{% for message in get_flashed_messages() %}
+				<p style="color: red; text-align: center">{{ message }}</p>
+				{% endfor %}
+			</div>
+		</div>
+	</body>
+</html>

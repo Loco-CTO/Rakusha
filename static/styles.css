@@ -1,0 +1,780 @@
+:root {
+    --theme-color                   : rgb(152, 131, 234);
+    --theme-color-light             : rgb(107, 98, 163);
+    --plyr-color-main               : rgb(152, 131, 234);
+    --plyr-audio-controls-background: rgb(13, 15, 18);
+}
+
+body {
+    font-family     : monospace;
+    margin          : 0;
+    padding         : 0;
+    display         : flex;
+    flex-direction  : column;
+    justify-content : center;
+    align-items     : center;
+    height          : 100vh;
+    background-color: rgb(22, 24, 29);
+    color           : rgb(255, 255, 255);
+}
+
+pre {
+    padding-bottom: 30px;
+}
+
+/* Container Styles */
+.audio-container,
+.error-container,
+.image-container,
+.video-container,
+.text-container {
+    position        : relative;
+    width           : 90%;
+    background-color: rgb(13, 15, 18);
+    border-radius   : 20px;
+    margin-bottom   : 20px;
+    padding         : 20px;
+}
+
+.audio-container {
+    max-width: 600px;
+}
+
+.error-container {
+    width         : 400px;
+    padding-bottom: 50px;
+    text-align    : center;
+}
+
+.image-container,
+.video-container {
+    height  : 80vh;
+    overflow: hidden;
+}
+
+.video-container {
+    padding: 0;
+}
+
+.text-container {
+    display    : flex;
+    width      : 80%;
+    min-width  : 60%;
+    height     : 80vh;
+    overflow   : auto;
+    line-height: 1.2;
+    padding    : 0 50px 0 50px;
+}
+
+.button-container {
+    display: flex;
+    gap    : 20px;
+}
+
+/* Scrollbar Styles */
+*::-webkit-scrollbar {
+    width : 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0);
+}
+
+*::-webkit-scrollbar-thumb {
+    background   : rgba(152, 131, 234, 0.2);
+    border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(152, 131, 234, 0.5);
+}
+
+*::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+/* Typography */
+h1 {
+    font-size: 50px;
+}
+
+p {
+    font-size: 15px;
+}
+
+.line-numbers,
+.text-content {
+    font-family: monospace;
+    font-size  : 11px;
+    line-height: 22px;
+    color      : #5c6370;
+}
+
+.line-numbers {
+    padding-right: 8px;
+    margin-right : 25px;
+}
+
+.line-numbers span {
+    counter-increment: line;
+}
+
+.line-numbers span::before {
+    content     : counter(line);
+    display     : inline-block;
+    width       : 2em;
+    margin-right: 1em;
+    text-align  : right;
+    color       : rgb(108, 108, 108);
+}
+
+/* Button Styles */
+.general-button {
+    position        : relative;
+    background-color: rgb(37, 40, 48);
+    color           : rgb(255, 255, 255);
+    padding         : 10px 20px;
+    border          : none;
+    border-radius   : 8px;
+    cursor          : pointer;
+    text-decoration : none;
+}
+
+.general-button:hover {
+    background-color: rgb(152, 131, 234);
+}
+
+.dark-button {
+    position        : relative;
+    background-color: rgb(22, 24, 29);
+    color           : rgb(255, 255, 255);
+    padding         : 10px 20px;
+    border          : none;
+    border-radius   : 8px;
+    cursor          : pointer;
+    text-decoration : none;
+}
+
+.dark-button:hover {
+    background-color: rgb(152, 131, 234);
+}
+
+/* Input and Select Styles */
+.filename-search,
+select {
+    background-color: rgb(22, 24, 29);
+    color           : rgb(255, 255, 255);
+    padding         : 10px 20px;
+    border          : none;
+    border-radius   : 8px;
+    font-size       : 12px;
+    font-family     : monospace;
+    box-sizing      : border-box;
+    transition      : background-color 0.3s ease;
+}
+
+.filename-search::placeholder {
+    color: #999;
+}
+
+.filename-search:focus,
+select:focus {
+    outline         : none;
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+option {
+    background-color: rgb(22, 24, 29);
+    color           : rgb(255, 255, 255);
+}
+
+/* Player Styles */
+.plyr {
+    height       : 100%;
+    width        : 100%;
+    border-radius: 20px;
+}
+
+.player-insert,
+.image-insert {
+    width     : 100%;
+    height    : 100%;
+    object-fit: contain;
+    display   : block;
+    margin    : 0 auto;
+}
+
+/* Code Highlighting */
+.hljs {
+    background: none !important;
+    padding   : 0 !important;
+    border    : none !important;
+}
+
+/* Login Page */
+.login-page {
+    font-family    : monospace;
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+    min-height     : 100vh;
+    margin         : 0;
+    padding        : 0 5%;
+    box-sizing     : border-box;
+    flex-direction : column;
+    user-select    : none;
+    position       : relative;
+    z-index        : 1;
+    /* Ensure content stays on top */
+}
+
+.login-page::before {
+    content            : "";
+    position           : absolute;
+    top                : 0;
+    left               : 0;
+    right              : 0;
+    bottom             : 0;
+    background-image   : url("/static/assets/login-backdrop.webp");
+    background-size    : cover;
+    background-position: center;
+    background-repeat  : no-repeat;
+    z-index            : -2;
+}
+
+.login-container {
+    padding         : 40px;
+    position        : relative;
+    z-index         : 2;
+    width           : 100%;
+    max-width       : 400px;
+    background-color: #0000005a;
+    backdrop-filter : blur(10px);
+    border-radius   : 10px;
+    margin-bottom   : 50px;
+    box-shadow      : 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.login-logo {
+    width         : 200px;
+    height        : auto;
+    padding-left  : 75px;
+    margin        : 10px auto;
+    padding-bottom: 5px;
+}
+
+.login-form {
+    display       : flex;
+    flex-direction: column;
+    gap           : 20px;
+}
+
+.login-form input {
+    width           : 100%;
+    padding         : 15px;
+    font-size       : 16px;
+    border-radius   : 10px;
+    border          : 0 solid;
+    background-color: #00000085;
+    color           : #fff;
+    box-sizing      : border-box;
+    font-family     : monospace;
+}
+
+.login-form input::placeholder {
+    color      : #999;
+    font-family: monospace;
+}
+
+.login-form input:focus {
+    outline     : none;
+    border-color: #ffffff;
+}
+
+.login-form button {
+    padding         : 15px;
+    font-size       : 16px;
+    background-color: rgb(37, 40, 48);
+    border          : none;
+    border-radius   : 10px;
+    color           : #fff;
+    cursor          : pointer;
+    transition      : background-color 0.3s ease;
+    font-family     : monospace;
+}
+
+.login-form button:hover {
+    background-color: rgb(152, 131, 234);
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+    display         : flex;
+    height          : 100vh;
+    width           : 100%;
+    background-color: rgb(22, 24, 29);
+    color           : rgb(255, 255, 255);
+}
+
+/* Sidebar */
+.sidebar {
+    width           : 13%;
+    min-width       : 200px;
+    background-color: rgb(13, 15, 18);
+    flex-shrink     : 0;
+    box-shadow      : 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        min-width: 100px;
+    }
+}
+
+.dashboard-logo {
+    width  : 70%;
+    display: block;
+    margin : 40px auto 50px auto;
+}
+
+.sidebar {
+    display        : flex;
+    flex-direction : column;
+    justify-content: space-between;
+    height         : 100vh;
+}
+
+.sidebar nav {
+    flex-grow: 1;
+}
+
+.sidebar-version {
+    padding-bottom: 20px;
+    text-align    : center;
+    color         : rgb(255, 255, 255);
+    font-size     : 16px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding   : 0;
+    margin    : 0;
+    width     : 100%;
+}
+
+.sidebar ul li a {
+    display        : block;
+    text-decoration: none;
+    color          : rgb(255, 255, 255);
+    padding        : 15px 20px 15px 20px;
+    transition     : background-color 0.3s ease;
+    font-size      : 15px;
+}
+
+.sidebar ul li a.active {
+    color           : rgb(255, 255, 255);
+    background-color: rgb(37, 40, 48);
+}
+
+@media only screen and (max-width: 768px) {
+    .dashboard-logo {
+        display: none;
+    }
+
+    .sidebar ul {
+        margin-top: 50px;
+    }
+
+    .sidebar ul li a {
+        padding: 5px 10px 10px 20px;
+    }
+}
+
+.sidebar ul li a:hover {
+    color: var(--theme-color);
+}
+
+/* Main Content */
+.main-content {
+    width   : 100%;
+    padding : 80px 120px;
+    overflow: auto;
+}
+
+@media only screen and (max-width: 768px) {
+    .main-content {
+        padding: 50px;
+    }
+}
+
+.header-bar {
+    margin-bottom: 40px;
+}
+
+.header-bar h1 {
+    margin   : 0;
+    color    : rgb(255, 255, 255);
+    font-size: 40px;
+}
+
+.section-title {
+    margin-bottom: 25px;
+    margin-top   : 25px;
+}
+
+.section-title h2 {
+    margin   : 0;
+    color    : rgb(255, 255, 255);
+    font-size: 30px;
+}
+
+/* Cards */
+.dashboard-cards {
+    display  : flex;
+    flex-wrap: wrap;
+    gap      : 20px;
+}
+
+.dashboard-card {
+    flex            : 1;
+    min-width       : 180px;
+    background-color: rgb(37, 40, 48);
+    border-radius   : 5px;
+    padding         : 20px 30px;
+}
+
+.dashboard-card h3 {
+    margin   : 0 0 10px 0;
+    font-size: 18px;
+    color    : var(--theme-color);
+}
+
+.dashboard-card-text {
+    font-size: 20px;
+    color    : rgb(255, 255, 255);
+    padding  : 1px 0 1px 0;
+}
+
+.dashboard-card-footer-text {
+    font-size: 13px;
+    color    : rgb(83, 90, 108);
+}
+
+@media (min-width: 1280px) {
+    .dashboard-items {
+        display: flex;
+    }
+}
+
+@media (min-width: 768px) {
+    .dashboard-item-row {
+        flex: 1 1 0%;
+    }
+}
+
+@media (min-width: 768px) {
+    .dashboard-item-row {
+        margin-right: 1.5rem;
+    }
+}
+
+.dashboard-item-row {
+    width         : 100%;
+    display       : flex;
+    flex-direction: column;
+    gap           : 20px;
+}
+
+.dashboard-item {
+    min-width       : 180px;
+    background-color: rgb(37, 40, 48);
+    border-radius   : 5px;
+    padding         : 20px 40px;
+    height          : auto;
+}
+
+.dashboard-item-container {
+    font-size     : 14px;
+    color         : rgb(255, 255, 255);
+    padding-bottom: 10px;
+}
+
+.dashboard-item-text-block {
+    width           : 100%;
+    font-size       : 14px;
+    padding         : 1px 0;
+    background-color: rgb(22, 24, 29);
+    border-radius   : 5px;
+    overflow        : scroll;
+}
+
+.dashboard-item-text-block pre {
+    padding-left: 12px;
+}
+
+.dashboard-item-text-line {
+    font-size: 14px;
+    padding  : 0;
+}
+
+.dashboard-item-warning-text {
+    font-size: 12px;
+    color    : rgb(255, 0, 0);
+    padding  : 10px 0;
+}
+
+.dashboard-item-info-text {
+    font-size: 13px;
+    color    : rgb(83, 90, 108);
+    padding  : 10px 0;
+}
+
+.dashboard-item-input {
+    width           : 100%;
+    padding         : 10px;
+    font-size       : 14px;
+    border-radius   : 5px;
+    border          : 0 solid;
+    background-color: rgb(22, 24, 29);
+    border-color    : var(--theme-color);
+    color           : rgb(255, 255, 255);
+    box-sizing      : border-box;
+}
+
+.dashboard-item-title {
+    font-size     : 18px;
+    color         : var(--theme-color);
+    padding-left  : 5px;
+    padding-bottom: 16px;
+}
+
+.dashboard-item-label {
+    margin-bottom: 10px;
+    font-size    : 14px;
+    padding-left : 5px;
+}
+
+.dashboard-item-button {
+    font-size       : 14px;
+    padding         : 8px 15px;
+    background-color: var(--theme-color);
+    margin-top      : 4px;
+    border          : none;
+    border-radius   : 5px;
+    color           : rgb(255, 255, 255);
+    cursor          : pointer;
+    transition      : background-color 0.3s ease;
+}
+
+.dashboard-item-button:hover {
+    background-color: var(--theme-color-light);
+}
+
+.dashboard-footer {
+    margin-top: 50px;
+    text-align: center;
+    color     : rgb(83, 90, 108);
+}
+
+.dashboard-footer p {
+    font-size: 14px;
+}
+
+.dashboard-footer a {
+    color: var(--theme-color);
+}
+
+/* File list */
+.file-list-container {
+    padding         : 50px;
+    background-color: rgb(37, 40, 48);
+    border-radius   : 5px;
+}
+
+.file-list-table {
+    width          : 100%;
+    border-collapse: collapse;
+}
+
+.file-list-table-title {
+    padding      : 12px 15px;
+    text-align   : left;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    font-size    : 12px;
+}
+
+.file-list-table-item {
+    padding   : 12px 15px;
+    text-align: left;
+    font-size : 12px;
+}
+
+.view-btn,
+.delete-btn {
+    margin-left     : 4px;
+    border          : none;
+    cursor          : pointer;
+    font-size       : 14px;
+    background-color: transparent;
+}
+
+.view-btn {
+    margin-left     : 4px;
+    border          : none;
+    cursor          : pointer;
+    font-size       : 14px;
+    background-color: transparent;
+}
+
+/* Dashboard Upload */
+.drop-area {
+    border-radius  : 20px;
+    border         : 2px dashed rgb(83, 90, 108);
+    width          : 100%;
+    height         : 200px;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    text-align     : center;
+    margin-top     : 20px;
+    padding        : 20px;
+    font-size      : 16px;
+    color          : rgb(83, 90, 108);
+    margin-bottom  : 20px;
+    transition     : border-color 0.3s ease;
+}
+
+.drop-file {
+    display: none;
+}
+
+.dragover {
+    border-color: var(--theme-color);
+    color       : rgb(255, 255, 255);
+}
+
+.pagination {
+    display        : flex;
+    justify-content: center;
+    gap            : 10px;
+    margin         : 20px 0;
+}
+
+/* Notification Frame */
+.notification-frame {
+    position        : fixed;
+    top             : 20px;
+    right           : 20px;
+    width           : 300px;
+    padding         : 15px;
+    background-color: #333;
+    color           : #fff;
+    border-radius   : 5px;
+    box-shadow      : 0 4px 8px rgba(0, 0, 0, 0.1);
+    opacity         : 0;
+    transform       : translateY(-20px);
+    transition      : opacity 0.3s ease, transform 0.3s ease;
+    z-index         : 1000;
+}
+
+.notification-frame.show {
+    opacity  : 1;
+    transform: translateY(0);
+}
+
+.notification-frame.success {
+    background-color: #4caf50;
+}
+
+.notification-frame.error {
+    background-color: #f44336;
+}
+
+/* Modal */
+.modal {
+    display         : none;
+    position        : fixed;
+    z-index         : 1000;
+    left            : 0;
+    top             : 0;
+    width           : 100%;
+    height          : 100%;
+    overflow        : auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: rgb(13, 15, 18);
+    margin          : 15% auto;
+    padding         : 20px;
+    border          : 1px solid #888;
+    width           : 80%;
+    max-width       : 500px;
+    border-radius   : 10px;
+}
+
+.close {
+    color      : #aaa;
+    float      : right;
+    font-size  : 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color          : black;
+    text-decoration: none;
+    cursor         : pointer;
+}
+
+.section {
+    margin-bottom: 40px;
+}
+
+.section-title {
+    margin-bottom: 25px;
+    margin-top   : 25px;
+}
+
+.section-title h2 {
+    margin   : 0;
+    color    : rgb(255, 255, 255);
+    font-size: 30px;
+}
+
+.file-list-container {
+    padding         : 50px;
+    background-color: rgb(37, 40, 48);
+    border-radius   : 5px;
+}
+
+.file-list-table {
+    width          : 100%;
+    border-collapse: collapse;
+}
+
+.file-list-table-title {
+    padding      : 12px 15px;
+    text-align   : left;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    font-size    : 12px;
+}
+
+.file-list-table-item {
+    padding   : 12px 15px;
+    text-align: left;
+    font-size : 12px;
+}
+
+.edit-btn {
+
+    background-color: transparent;
+    border          : none;
+    cursor          : pointer;
+}
+
+.edit-btn i {
+    color: var(--theme-color) !important;
+}

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{% block title %}Dashboard{% endblock %}</title>
+		<link rel="icon" href="/static/favicon.png" type="image/png" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='styles.css') }}"
+		/>
+		<link
+			rel="stylesheet"
+			href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/styles/dark.min.css"
+		/>
+		<link rel="stylesheet" href="/static/code.css" />
+	</head>
+	<body>
+		<div class="dashboard-container">
+			<aside class="sidebar">
+				<nav>
+					<img
+						src="/static/assets/logo-banner.webp"
+						alt="Logo"
+						class="dashboard-logo"
+					/>
+					<ul>
+						<li>
+							<a
+								href="/dashboard"
+								class="{% if active_page == 'home' %}active{% endif %}"
+								>Home</a
+							>
+						</li>
+						<li>
+							<a
+								href="/dashboard/files"
+								class="{% if active_page == 'files' %}active{% endif %}"
+								>Files</a
+							>
+						</li>
+						<li>
+							<a
+								href="/dashboard/upload"
+								class="{% if active_page == 'upload' %}active{% endif %}"
+								>Upload</a
+							>
+						</li>
+						<li>
+							<a
+								href="/dashboard/settings"
+								class="{% if active_page == 'settings' %}active{% endif %}"
+								>Settings</a
+							>
+						</li>
+						{% if is_admin %}
+						<li>
+							<a
+								href="/dashboard/admin"
+								class="{% if active_page == 'admin' %}active{% endif %}"
+								>Administration</a
+							>
+						</li>
+						{% endif %}
+					</ul>
+				</nav>
+				<div class="sidebar-version">
+					<small>Version: {{ version }}</small>
+				</div>
+			</aside>
+			<div class="main-content">
+				{% block content %}{% endblock %}
+				<footer class="dashboard-footer">
+					<p>
+						<small
+							>Copyright © 2024 <a href="https://rystal.net">Rystal</a>. All
+							rights reserved.</small
+						>
+					</p>
+				</footer>
+			</div>
+		</div>
+		<div id="notification-frame" class="notification-frame"></div>
+	</body>
+	<script>
+		function showNotification(message, type) {
+		    const notificationFrame = document.getElementById('notification-frame');
+		    notificationFrame.textContent = message;
+		    notificationFrame.className = `notification-frame show ${type}`;
+		    setTimeout(() => {
+		        notificationFrame.className = 'notification-frame';
+		    }, 3000);
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+		    const messages = {{ get_flashed_messages(with_categories=true) | tojson | safe }};
+		    messages.forEach(([category, message]) => {
+		        showNotification(message, category);
+		    });
+
+		    const notification = {{ session.get('notification') | tojson | safe }};
+		    if (notification) {
+		        showNotification(notification.message, notification.type);
+		        fetch("{{ url_for('dashboard.clear_notification') }}");
+		    }
+		});
+	</script>
+</html>

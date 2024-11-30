@@ -1,0 +1,260 @@
+{% extends "dashboard_base.html" %} {% block title %}{{ pagetitle }}{% endblock
+%} {% block content %}
+<header class="header-bar">
+	<h1>Settings</h1>
+</header>
+<div class="dashboard-items">
+	<div class="dashboard-item-row">
+		<div class="dashboard-item">
+			<h3 class="dashboard-item-title">
+				<i class="fa fa-cloud-upload"></i> Account Details
+			</h3>
+			<div class="dashboard-item-container">
+				<label class="dashboard-item-label">Account Identifier</label>
+			</div>
+			<div class="dashboard-item-container">
+				<div class="dashboard-item-text-block">
+					<pre class="dashboard-item-text-line">{{ user_secret }}</pre>
+				</div>
+			</div>
+			<div class="dashboard-item-container">
+				<label class="dashboard-item-label">Secret Key</label>
+			</div>
+			<div class="dashboard-item-container">
+				<div class="dashboard-item-text-block">
+					<pre class="dashboard-item-text-line">{{ sharex_key }}</pre>
+				</div>
+			</div>
+			<div class="dashboard-item-container">
+				<label class="dashboard-item-label">Endpoint Address</label>
+			</div>
+			<div class="dashboard-item-container">
+				<div class="dashboard-item-text-block">
+					<pre class="dashboard-item-text-line">{{ sharex_address|safe }}</pre>
+				</div>
+			</div>
+			<div class="dashboard-item-container">
+				<label class="dashboard-item-label">Config</label>
+			</div>
+			<div class="dashboard-item-container">
+				<div class="dashboard-item-text-block">
+					<pre
+						class="dashboard-item-text-line"
+					><code class="language-json" id>{{ sharex_config }}</code></pre>
+				</div>
+			</div>
+		</div>
+		<div class="dashboard-item">
+			<h3 class="dashboard-item-title">
+				<i class="fa fa-user"></i> Update Email
+			</h3>
+			<form method="POST">
+				<div class="dashboard-item-container">
+					<label class="dashboard-item-label"> Email </label>
+				</div>
+				<div class="dashboard-item-container">
+					<label>
+						<input
+							class="dashboard-item-input"
+							type="text"
+							id="email"
+							name="email"
+							placeholder="Email"
+							required
+							value="{{ email }}"
+						/>
+					</label>
+				</div>
+				<div class="dashboard-item-container">
+					<label class="dashboard-item-label"> Confirm Password </label>
+				</div>
+				<div class="dashboard-item-container">
+					<label>
+						<input
+							class="dashboard-item-input"
+							type="password"
+							name="password"
+							placeholder="Password"
+							required
+						/>
+					</label>
+				</div>
+				<div class="dashboard-item-container">
+					<button class="dashboard-item-button" name="update_email">
+						Update
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="dashboard-item-row">
+		<div class="dashboard-item">
+			<h3 class="dashboard-item-title">
+				<i class="fa fa-user"></i> Update Username
+			</h3>
+			<form method="POST">
+				<div class="dashboard-item-container">
+					<label class="dashboard-item-label"> Username </label>
+				</div>
+				<div class="dashboard-item-container">
+					<label>
+						<input
+							class="dashboard-item-input"
+							type="text"
+							id="username"
+							name="username"
+							placeholder="Username"
+							required
+							value="{{ username }}"
+						/>
+					</label>
+				</div>
+				<div class="dashboard-item-container">
+					<label class="dashboard-item-label"> Confirm Password </label>
+				</div>
+				<div class="dashboard-item-container">
+					<label>
+						<input
+							class="dashboard-item-input"
+							type="password"
+							name="password"
+							placeholder="Password"
+							required
+						/>
+					</label>
+				</div>
+				<div class="dashboard-item-container">
+					<button class="dashboard-item-button" name="update_username">
+						Update
+					</button>
+				</div>
+			</form>
+		</div>
+		<div class="dashboard-item">
+			<h3 class="dashboard-item-title">
+				<i class="fa fa-key"></i> Update Password
+			</h3>
+			<form method="POST">
+				<div class="dashboard-item-container">
+					<label class="dashboard-item-label"> Current Password </label>
+				</div>
+				<div class="dashboard-item-container">
+					<label>
+						<input
+							class="dashboard-item-input"
+							type="password"
+							name="current_password"
+							placeholder="Current Password"
+							required
+						/>
+					</label>
+				</div>
+				<div class="dashboard-item-container">
+					<label class="dashboard-item-label"> New Password </label>
+				</div>
+				<div class="dashboard-item-container">
+					<label>
+						<input
+							class="dashboard-item-input"
+							type="password"
+							name="new_password"
+							placeholder="New Password"
+							required
+						/>
+					</label>
+				</div>
+				<div class="dashboard-item-container">
+					<label class="dashboard-item-label"> Confirm New Password </label>
+				</div>
+				<div class="dashboard-item-container">
+					<label>
+						<input
+							class="dashboard-item-input"
+							type="password"
+							name="confirm_new_password"
+							placeholder="Confirm New Password"
+							required
+						/>
+					</label>
+				</div>
+				<div class="dashboard-item-container">
+					<button class="dashboard-item-button" name="update_password">
+						Update
+					</button>
+				</div>
+			</form>
+		</div>
+		<div class="dashboard-item">
+			<h3 class="dashboard-item-title">
+				<i class="fa fa-trash"></i> Delete All Uploads
+			</h3>
+			<form method="POST">
+				<div class="dashboard-item-container">
+					<label class="dashboard-item-label"> Confirm Password </label>
+				</div>
+				<div class="dashboard-item-container">
+					<label>
+						<input
+							class="dashboard-item-input"
+							type="password"
+							name="password"
+							placeholder="Password"
+							required
+						/>
+					</label>
+				</div>
+				<p class="dashboard-item-warning-text">
+					* Please note that this action is irreversible.
+				</p>
+				<div class="dashboard-item-container">
+					<button class="dashboard-item-button" name="delete_uploads">
+						Delete
+					</button>
+				</div>
+			</form>
+		</div>
+		<div class="dashboard-item">
+			<h3 class="dashboard-item-title">
+				<i class="fa fa-info-circle"></i> Request Your Data
+			</h3>
+			<form method="POST">
+				<div class="dashboard-item-container">
+					<label class="dashboard-item-label"> Confirm Password </label>
+				</div>
+				<div class="dashboard-item-container">
+					<label>
+						<input
+							class="dashboard-item-input"
+							type="password"
+							name="password"
+							placeholder="Password"
+							required
+						/>
+					</label>
+				</div>
+				<p class="dashboard-item-info-text">
+					* Your data will be sent to your email address within 30 working days.
+				</p>
+				<div class="dashboard-item-container">
+					<button class="dashboard-item-button" name="request_data">
+						Request
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.3.1/highlight.min.js"></script>
+<script>
+	document.addEventListener("DOMContentLoaded", function (event) {
+		document.getElementById("username").value = "{{ username }}";
+		document.getElementById("email").value = "{{ email }}";
+	});
+
+	document.addEventListener("DOMContentLoaded", (event) => {
+		document.querySelectorAll("pre code").forEach((block) => {
+			hljs.highlightBlock(block);
+		});
+	});
+</script>
+{% endblock %}
