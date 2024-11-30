@@ -69,12 +69,6 @@ Create a `.env` file in the root directory and add the following:
 SECRET_KEY=your_secret_key
 ```
 
-5. Initialize the database:
-
-```bash
-python -c 'from database import db_handler; db_handler.create_tables()'
-```
-
 6. Run the application:
 
 ```bash
