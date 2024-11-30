@@ -23,10 +23,12 @@
 
 ## Key Features
 
-- **File Upload**: Upload files directly to the server.
+- **File Upload**: Upload files directly to the server or using [ShareX](https://getsharex.com).
 - **File Management**: View, delete, and manage uploaded files.
 - **User Authentication**: Secure login and registration system.
 - **Invite System**: Generate and manage invite codes for user registration.
+
+**Note that this project is still in development and is not planned for production use.*
 
 ## Installation
 
@@ -67,13 +69,7 @@ Create a `.env` file in the root directory and add the following:
 SECRET_KEY=your_secret_key
 ```
 
-5. Initialize the database:
-
-```bash
-python -c 'from database import db_handler; db_handler.create_tables()'
-```
-
-6. Run the application:
+5. Run the application:
 
 ```bash
 python 
@@ -85,7 +81,7 @@ run.py
 
 ### Uploading Files
 
-You can upload files directly through the dashboard interface.
+You can upload files directly through the dashboard interface or using [ShareX](https://getsharex.com).
 
 ### Managing Files
 
