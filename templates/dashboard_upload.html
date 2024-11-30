@@ -1,0 +1,71 @@
+{% extends "dashboard_base.html" %} {% block title %}{{ pagetitle }}{% endblock
+%} {% block content %}
+<header class="header-bar">
+	<h1>Upload Files</h1>
+</header>
+<div class="upload-container">
+	<form id="upload-form" enctype="multipart/form-data">
+		<div class="form-group">
+			<div id="drop-area" class="drop-area">
+				<label id="drop-file-label" class="drop-file-label"
+					>Choose file to upload or drop here to upload (Max size: 100MB)</label
+				>
+				<input class="drop-file" type="file" id="file" name="file" required />
+			</div>
+		</div>
+		<button type="submit" class="general-button">Upload</button>
+	</form>
+</div>
+<script>
+	const dropArea = document.getElementById("drop-area");
+	const fileInput = document.getElementById("file");
+	const label = document.getElementById("drop-file-label");
+	const form = document.getElementById("upload-form");
+
+	fileInput.addEventListener("change", () => {
+		label.textContent = fileInput.files[0]?.name || "Choose File";
+	});
+
+	dropArea.addEventListener("dragover", (event) => {
+		event.preventDefault();
+		dropArea.classList.add("dragover");
+	});
+
+	dropArea.addEventListener("dragleave", () => {
+		dropArea.classList.remove("dragover");
+	});
+
+	dropArea.addEventListener("drop", (event) => {
+		event.preventDefault();
+		dropArea.classList.remove("dragover");
+		const files = event.dataTransfer.files;
+		fileInput.files = files;
+		label.textContent = files[0]?.name || "Choose File";
+	});
+
+	dropArea.addEventListener("click", () => {
+		fileInput.click();
+	});
+
+	form.addEventListener("submit", (event) => {
+		event.preventDefault();
+		const formData = new FormData(form);
+		fetch('{{ url_for("upload.dashboard") }}', {
+			method: "POST",
+			body: formData,
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.url) {
+					window.open(data.url, "_blank");
+				} else {
+					alert("Upload failed");
+				}
+			})
+			.catch((error) => {
+				console.error("Error:", error);
+				alert("Upload failed");
+			});
+	});
+</script>
+{% endblock %}

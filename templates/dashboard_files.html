@@ -1,0 +1,119 @@
+{% extends "dashboard_base.html" %} {% block title %}{{ pagetitle }}{% endblock %} {% block content %}
+    <header class="header-bar">
+        <h1>Uploaded Files</h1>
+    </header>
+    <div class="file-list">
+        <div class="file-list-container">
+            <form method="GET" class="sort-form">
+                <label for="search">Search:</label>
+                <input class="filename-search" type="text" name="search" id="search" value="{{ search }}"
+                       placeholder="Search by filename">
+                <label for="sort_by">Sort by:</label>
+                <select name="sort_by" id="sort_by">
+                    <option value="filename" {% if sort_by == 'filename' %}selected{% endif %}>Filename</option>
+                    <option value="upload_time" {% if sort_by == 'upload_time' %}selected{% endif %}>Date Uploaded
+                    </option>
+                    <option value="views" {% if sort_by == 'views' %}selected{% endif %}>Views</option>
+                    <option value="size" {% if sort_by == 'size' %}selected{% endif %}>Size</option>
+                </select>
+                <select name="sort_order" id="sort_order">
+                    <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>Ascending</option>
+                    <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>Descending</option>
+                </select>
+                <button type="submit" class="dark-button">Sort</button>
+            </form>
+            <table class="file-list-table">
+                <thead>
+                <tr>
+                    <th class="file-list-table-title">Filename</th>
+                    <th class="file-list-table-title">Date Uploaded</th>
+                    <th class="file-list-table-title">Views</th>
+                    <th class="file-list-table-title">Size</th>
+                    <th class="file-list-table-title">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for upload in uploads %}
+                    <tr>
+                        <td class="file-list-table-item">{{ upload[0] }}</td>
+                        <td class="file-list-table-item">{{ upload[2] }}</td>
+                        <td class="file-list-table-item">{{ upload[4] }}</td>
+                        <td class="file-list-table-item" data-size="{{ upload[3] }}"></td>
+                        <td class="actions">
+                            <a href="/view/{{ upload[1] }}" style="text-decoration: none;">
+                                <i class="fa-solid fa-eye" style="color: #ffffff"></i>
+                            </a>
+                            <button class="delete-btn" data-filename="{{ upload[1] }}">
+                                <i class="fa-solid fa-trash" style="color: #d01616"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('dashboard.files', page=page-1, sort_by=sort_by, sort_order=sort_order, search=search) }}"
+                   class="general-button">Previous</a>
+            {% endif %}
+            {% if page < total_pages %}
+                <a href="
+
+                        {{ url_for('dashboard.files', page=page+1, sort_by=sort_by, sort_order=sort_order, search=search) }}"
+                   class="general-button">Next</a>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const sizeCells = document.querySelectorAll('.file-list-table-item[data-size]');
+            sizeCells.forEach(cell => {
+                const size = parseInt(cell.getAttribute('data-size'), 10);
+                cell.textContent = formatSize(size);
+            });
+        });
+
+        function formatSize(size) {
+            const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+            let unitIndex = 0;
+            while (size >= 1024 && unitIndex < units.length - 1) {
+                size /= 1024;
+                unitIndex++;
+            }
+            return `${size.toFixed(2)} ${units[unitIndex]}`;
+        }
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const deleteButtons = document.querySelectorAll(".delete-btn");
+            deleteButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const filename = this.dataset.filename;
+                    if (confirm("Are you sure you want to delete this file?")) {
+                        const formData = new FormData();
+                        formData.append("filename", filename);
+
+                        fetch("{{ url_for('dashboard.delete_file') }}", {
+                            method: "POST",
+                            body: formData,
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    location.reload();
+                                } else {
+                                    showNotification("Error: " + data.error, "error");
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Error:", error);
+                                showNotification("An error occurred while deleting the file", "error");
+                            });
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

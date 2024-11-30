@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{{ pagetitle }}</title>
+
+		<meta property="og:title" content="{{ filename }}" />
+		<meta
+			property="og:url"
+			content="https://files.rystal.space/storage/{{ filename }}"
+		/>
+		<meta property="og:type" content="audio.other" />
+		<meta
+			property="og:audio"
+			content="https://files.rystal.space/storage/{{ filename }}"
+		/>
+		<meta property="og:audio:type" content="audio/mpeg" />
+
+		<link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
+		<link rel="icon" href="/static/favicon.png" type="image/png" />
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='styles.css') }}"
+		/>
+	</head>
+	<body>
+		<div class="audio-container">
+			<audio id="player" class="plyr" controls>
+				<source src="/storage/{{ filename }}" type="audio/mp3" />
+				Your browser does not support the audio tag.
+			</audio>
+		</div>
+
+		<script src="https://cdn.plyr.io/3.6.8/plyr.polyfilled.js"></script>
+		<script>
+			document.addEventListener("DOMContentLoaded", () => {
+				const player = new Plyr("#player");
+			});
+		</script>
+
+		<a href="/storage/{{ filename }}" class="general-button" download
+			>Download</a
+		>
+	</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{{ pagetitle }}</title>
+
+		<meta property="og:title" content="{{ filename }}" />
+		<meta
+			property="og:url"
+			content="https://files.rystal.space/storage/{{ filename }}"
+		/>
+		<meta property="og:type" content="video" />
+		<meta
+			property="og:video"
+			content="https://files.rystal.space/storage/{{ filename }}"
+		/>
+		<meta property="og:video:width" content="1280" />
+		<meta property="og:video:height" content="720" />
+		<meta property="og:video:type" content="video/mp4" />
+
+		<link rel="stylesheet" href="https://cdn.plyr.io/3.6.8/plyr.css" />
+		<link rel="icon" href="/static/favicon.png" type="image/png" />
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='styles.css') }}"
+		/>
+	</head>
+	<body>
+		<div class="video-container">
+			<video class="player-insert" id="player" controls>
+				<source src="/storage/{{ filename }}" type="video/mp4" />
+				Your browser does not support the video tag.
+			</video>
+		</div>
+
+		<script src="https://cdn.plyr.io/3.6.8/plyr.polyfilled.js"></script>
+		<script>
+			const player = new Plyr("#player", {});
+		</script>
+
+		<a href="/storage/{{ filename }}" class="general-button" download
+			>Download</a
+		>
+	</body>
+</html>
