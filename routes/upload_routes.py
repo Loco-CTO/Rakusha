@@ -3,12 +3,12 @@ import os
 import random
 import string
 
-from flask import Blueprint, jsonify, request
-from flask import url_for
+from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
 
 from database import db_handler
 from models.user import User
+
 from .extensions import supported_extensions
 
 upload_bp = Blueprint("upload", __name__)

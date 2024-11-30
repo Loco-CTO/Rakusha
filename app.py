@@ -18,11 +18,11 @@ from error import handle_error
 from models.user import User, create_account
 from routes.auth_routes import auth_bp
 from routes.dashboard_route import dashboard_bp
+from routes.invite_routes import invite_bp
 from routes.storage_routes import storage_bp
 from routes.upload_routes import upload_bp
 from routes.view_routes import view_bp
 from version import __version__
-from routes.invite_routes import invite_bp
 
 app = Flask(__name__)
 
