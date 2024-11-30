@@ -28,6 +28,8 @@
 - **User Authentication**: Secure login and registration system.
 - **Invite System**: Generate and manage invite codes for user registration.
 
+**Note that this project is still in development and is not planned for production use.*
+
 ## Installation
 
 ### Prerequisites
