@@ -18,6 +18,7 @@ from database import db_handler
 from models.invite import Invite
 from models.page_title import build_title
 from models.user import User
+from werkzeug.utils import secure_filename
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
@@ -30,10 +31,10 @@ def set_password():
     user = current_user
     filename = request.form.get("filename")
     new_password = request.form.get("new_password")
-    if not filename or not new_password:
+    if not filename:
         return jsonify({"error": "Filename and password are required"}), 400
 
-    password_hash = generate_password_hash(new_password)
+    password_hash = generate_password_hash(new_password) if new_password else None
     db_handler.execute(
         "UPDATE uploads SET password_hash = ? WHERE filename = ? AND owner_identifier = ?",
         (password_hash, filename, user.account_identifier),
@@ -50,7 +51,13 @@ def delete_file():
         session["notification"] = {"message": "No filename provided", "type": "error"}
         return jsonify({"error": "No filename provided"}), 400
 
+    filename = secure_filename(filename)
     file_path = os.path.join(UPLOAD_FOLDER, filename)
+
+    if not os.path.exists(os.path.abspath(UPLOAD_FOLDER)):
+        session["notification"] = {"message": "Invalid file path", "type": "error"}
+        return jsonify({"error": "Invalid file path"}), 400
+
     if os.path.exists(file_path):
         os.remove(file_path)
         db_handler.execute(

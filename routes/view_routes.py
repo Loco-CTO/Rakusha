@@ -26,6 +26,7 @@ from werkzeug.utils import secure_filename
 def view(filename):
     filename = secure_filename(filename)
     file_path = os.path.join(uploads_folder, filename)
+    password = None
 
     if not os.path.exists(os.path.abspath(uploads_folder)):
         abort(404)
