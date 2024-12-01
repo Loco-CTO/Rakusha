@@ -1,9 +1,19 @@
 import os
 
 from flask import Blueprint, abort, current_app, render_template, send_file
-
+from flask import (
+    Blueprint,
+    flash,
+    jsonify,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
 from database import db_handler
 from models.page_title import build_title
+from werkzeug.security import check_password_hash
 
 from .extensions import supported_extensions
 
@@ -11,58 +21,100 @@ view_bp = Blueprint("view", __name__)
 uploads_folder = "uploads"
 
 
-@view_bp.route("/<filename>", methods=["GET"])
+from werkzeug.security import check_password_hash
+
+from werkzeug.security import check_password_hash
+
+
+@view_bp.route("/<filename>", methods=["GET", "POST"])
 def view(filename):
     file_path = os.path.join(uploads_folder, filename)
-    if os.path.exists(file_path):
-        db_handler.execute(
-            "UPDATE uploads SET views = views + 1 WHERE filename = ?",
-            (filename,),
+    if not os.path.exists(file_path):
+        abort(404)
+
+    file_info = db_handler.execute(
+        "SELECT password_hash FROM uploads WHERE filename = ?",
+        (filename,),
+    )[0]
+
+    if file_info[0]:
+        if request.method == "POST":
+            password = request.form.get("password")
+            if check_password_hash(file_info[0], password):
+                return render_file_view(filename, file_path, password)
+            else:
+                flash("Incorrect password.", "error")
+        return render_template("password_view.html", filename=filename)
+
+    return render_file_view(filename, file_path, password)
+
+
+def render_file_view(filename, file_path, password=None):
+    extension = filename.rsplit(".", 1)[1].lower()
+
+    filename = f"{filename}?password={password}" if password else filename
+
+    if extension in supported_extensions["image"]:
+        return render_template(
+            "image_view.html",
+            pagetitle=build_title("View Image"),
+            filename=filename,
         )
-        current_app.logger.info(f"Incremented view count for {filename}")
-
-        extension = filename.rsplit(".", 1)[1].lower()
-
-        if extension in supported_extensions["image"]:
-            return render_template(
-                "image_view.html",
-                pagetitle=build_title("View Image"),
-                filename=filename,
-            )
-        elif extension in supported_extensions["video"]:
-            return render_template(
-                "video_view.html",
-                pagetitle=build_title("View Video"),
-                filename=filename,
-            )
-        elif extension in supported_extensions["audio"]:
-            return render_template(
-                "audio_view.html",
-                pagetitle=build_title("View Audio"),
-                filename=filename,
-            )
-        elif (
-            extension in supported_extensions["text"]
-            or extension in supported_extensions["code"]
-        ):
-            with open(file_path, "r") as file:
-                file_content = file.read()
-            line_numbers = "\n".join(
-                str(i + 1) for i in range(len(file_content.splitlines()))
-            )
-            return render_template(
-                "text_view.html",
-                pagetitle=build_title("View Text"),
-                filename=filename,
-                file_content=file_content,
-                line_numbers=line_numbers,
-            )
-    abort(404)
+    elif extension in supported_extensions["video"]:
+        return render_template(
+            "video_view.html",
+            pagetitle=build_title("View Video"),
+            filename=filename,
+        )
+    elif extension in supported_extensions["audio"]:
+        return render_template(
+            "audio_view.html",
+            pagetitle=build_title("View Audio"),
+            filename=filename,
+        )
+    elif (
+        extension in supported_extensions["text"]
+        or extension in supported_extensions["code"]
+    ):
+        with open(file_path, "r") as file:
+            file_content = file.read()
+        line_numbers = "\n".join(
+            str(i + 1) for i in range(len(file_content.splitlines()))
+        )
+        return render_template(
+            "text_view.html",
+            pagetitle=build_title("View Text"),
+            filename=filename,
+            file_content=file_content,
+            line_numbers=line_numbers,
+        )
+    else:
+        return send_file(file_path)
 
 
-@view_bp.route("/raw/<filename>", methods=["GET"])
+@view_bp.route("/raw/<filename>", methods=["GET", "POST"])
 def view_raw(filename):
     file_path = os.path.join(uploads_folder, filename)
-    if os.path.exists(file_path):
-        return send_file(file_path, mimetype="text/plain", as_attachment=False)
-    abort(404)
+    if not os.path.exists(file_path):
+        abort(404)
+
+    file_info = db_handler.execute(
+        "SELECT password_hash FROM uploads WHERE filename = ?",
+        (filename,),
+    )[0]
+
+    if file_info[0]:
+        password = request.args.get("password")
+        if password and check_password_hash(file_info[0], password):
+            return send_file(file_path, mimetype="text/plain", as_attachment=False)
+        if request.method == "POST":
+            password = request.form.get("password")
+            if check_password_hash(file_info[0], password):
+                return redirect(
+                    url_for("view.view_raw", filename=filename, password=password)
+                )
+            else:
+                flash("Incorrect password.", "error")
+        return render_template("password_view.html", filename=filename)
+
+    return send_file(file_path, mimetype="text/plain", as_attachment=False)

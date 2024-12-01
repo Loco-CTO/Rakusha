@@ -21,24 +21,25 @@ db_handler = DatabaseHandler(
                     "username": "TEXT UNIQUE NOT NULL",
                     "password": "TEXT NOT NULL",
                     "account_identifier": "TEXT UNIQUE NOT NULL",
-                    "secret_key": "TEXT",
+                    "secret_key": "TEXT NOT NULL",
                     "email": "TEXT NOT NULL",
                     "is_admin": "BOOLEAN DEFAULT FALSE",
                 },
             },
             "uploads": {
                 "create": """
-                    CREATE TABLE IF NOT EXISTS uploads (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        original_name TEXT NOT NULL,
-                        filename TEXT NOT NULL,
-                        views INTEGER DEFAULT 0,
-                        size INTEGER NOT NULL,
-                        owner_identifier TEXT NOT NULL,
-                        upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                        FOREIGN KEY(owner_identifier) REFERENCES users(account_identifier)
-                    )
-                """,
+        CREATE TABLE IF NOT EXISTS uploads (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            original_name TEXT NOT NULL,
+            filename TEXT NOT NULL,
+            views INTEGER DEFAULT 0,
+            size INTEGER NOT NULL,
+            owner_identifier TEXT NOT NULL,
+            upload_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            password_hash TEXT,
+            FOREIGN KEY(owner_identifier) REFERENCES users(account_identifier)
+        )
+    """,
                 "columns": {
                     "id": "INTEGER PRIMARY KEY AUTOINCREMENT",
                     "original_name": "TEXT NOT NULL",
@@ -46,6 +47,7 @@ db_handler = DatabaseHandler(
                     "views": "INTEGER DEFAULT 0",
                     "size": "INTEGER NOT NULL",
                     "owner_identifier": "TEXT NOT NULL",
+                    "password_hash": "TEXT",
                     "upload_time": "TIMESTAMP DEFAULT CURRENT_TIMESTAMP",
                 },
             },

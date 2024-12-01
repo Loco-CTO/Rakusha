@@ -5,6 +5,7 @@ import string
 
 from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
+from werkzeug.security import generate_password_hash
 
 from database import db_handler
 from models.user import User
@@ -83,8 +84,10 @@ def dashboard():
         file.save(os.path.join(storage_folder, filename))
         file_size = os.path.getsize(os.path.join(storage_folder, filename))
         upload_time = datetime.datetime.now()
+        password = request.form.get("password")
+        password_hash = generate_password_hash(password) if password else None
         db_handler.execute(
-            "INSERT INTO uploads (original_name, filename, views, size, owner_identifier, upload_time) VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO uploads (original_name, filename, views, size, owner_identifier, upload_time, password_hash) VALUES (?, ?, ?, ?, ?, ?, ?)",
             (
                 file.filename,
                 filename,
@@ -92,6 +95,7 @@ def dashboard():
                 file_size,
                 user.account_identifier,
                 upload_time,
+                password_hash,
             ),
         )
         return jsonify({"url": url_for("view.view", filename=filename)}), 201

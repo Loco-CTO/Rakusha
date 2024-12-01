@@ -184,6 +184,28 @@ select:focus {
     background-color: rgba(255, 255, 255, 0.25);
 }
 
+.secondary-input {
+    width           : 280px;
+    background-color: rgb(13, 15, 18);
+    color           : rgb(255, 255, 255);
+    padding         : 10px 20px;
+    border          : none;
+    border-radius   : 8px;
+    font-size       : 12px;
+    font-family     : monospace;
+    box-sizing      : border-box;
+    transition      : background-color 0.3s ease;
+}
+
+.secondary-input::placeholder {
+    color: #999;
+}
+
+.secondary-input:focus {
+    outline         : none;
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
 option {
     background-color: rgb(22, 24, 29);
     color           : rgb(255, 255, 255);
@@ -542,6 +564,7 @@ option {
     box-sizing      : border-box;
 }
 
+
 .dashboard-item-title {
     font-size     : 18px;
     color         : var(--theme-color);
@@ -768,13 +791,82 @@ option {
     font-size : 12px;
 }
 
-.edit-btn {
+.other-btn {
 
     background-color: transparent;
     border          : none;
     cursor          : pointer;
 }
 
-.edit-btn i {
+.other-btn i {
     color: var(--theme-color) !important;
+}
+
+/* Password View */
+.password-container {
+    max-width       : 400px;
+    margin          : 100px auto;
+    padding         : 50px;
+    background-color: #0000005a;
+    border-radius   : 10px;
+    text-align      : center;
+}
+
+.password-container h2 {
+    margin-bottom: 20px;
+    color        : rgb(255, 255, 255);
+}
+
+.password-container .form-group {
+    margin-bottom: 20px;
+
+}
+
+.password-container .form-group input {
+    padding         : 10px;
+    width           : 100%;
+    border          : 0px;
+    border-radius   : 5px;
+    background-color: rgb(22, 24, 29);
+    color           : rgb(255, 255, 255);
+}
+
+/* Modal */
+
+
+.modal {
+    display : none;
+    position: fixed;
+    z-index : 1000;
+    left    : 0;
+    top     : 0;
+    width   : 100%;
+    height  : 100%;
+    overflow: auto;
+    border  : none;
+}
+
+.modal-content {
+    background-color: rgb(13, 15, 18);
+    margin          : 15% auto;
+    padding         : 20px;
+    width           : 80%;
+    max-width       : 500px;
+    border-radius   : 10px;
+    border          : none;
+    box-shadow      : 0 0 8px var(--theme-color-light);
+}
+
+.close {
+    color      : #aaa;
+    float      : right;
+    font-size  : 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color          : black;
+    text-decoration: none;
+    cursor         : pointer;
 }
