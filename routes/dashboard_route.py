@@ -13,6 +13,7 @@ from flask import (
 )
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash
 
 from database import db_handler
 from models.invite import Invite
@@ -22,6 +23,23 @@ from models.user import User
 dashboard_bp = Blueprint("dashboard", __name__)
 
 UPLOAD_FOLDER = "uploads"
+
+
+@dashboard_bp.route("/set_password", methods=["POST"])
+@login_required
+def set_password():
+    user = current_user
+    filename = request.form.get("filename")
+    new_password = request.form.get("new_password")
+    if not filename or not new_password:
+        return jsonify({"error": "Filename and password are required"}), 400
+
+    password_hash = generate_password_hash(new_password)
+    db_handler.execute(
+        "UPDATE uploads SET password_hash = ? WHERE filename = ? AND owner_identifier = ?",
+        (password_hash, filename, user.account_identifier),
+    )
+    return jsonify({"success": "Password set successfully"}), 200
 
 
 @dashboard_bp.route("/delete_file", methods=["POST"])
