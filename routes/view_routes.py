@@ -1,30 +1,29 @@
 import os
 
-from flask import Blueprint, abort, current_app, render_template, send_file
 from flask import (
     Blueprint,
+    abort,
+    current_app,
     flash,
     jsonify,
     redirect,
     render_template,
     request,
+    send_file,
     session,
     url_for,
 )
+from werkzeug.security import check_password_hash
+
 from database import db_handler
 from models.page_title import build_title
-from werkzeug.security import check_password_hash
 
 from .extensions import supported_extensions
 
 view_bp = Blueprint("view", __name__)
 uploads_folder = "uploads"
+from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
-
-
-from werkzeug.security import check_password_hash
-
-from werkzeug.security import check_password_hash
 
 
 @view_bp.route("/<filename>", methods=["GET", "POST"])
