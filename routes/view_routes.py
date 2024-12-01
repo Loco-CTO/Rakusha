@@ -22,10 +22,8 @@ from .extensions import supported_extensions
 
 view_bp = Blueprint("view", __name__)
 uploads_folder = "uploads"
-from werkzeug.utils import secure_filename
-
-
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 
 
 @view_bp.route("/<filename>", methods=["GET", "POST"])
