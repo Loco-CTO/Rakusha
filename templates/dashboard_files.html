@@ -76,7 +76,7 @@
             </div>
             <div class="dashboard-item-container">
                 <div class="form-group">
-                    <input class="dashboard-item-input" type="password" id="new_password" name="new_password" required>
+                    <input class="dashboard-item-input" type="password" id="new_password" name="new_password">
                 </div>
             </div>
             <div class="dashboard-item-container">
@@ -88,7 +88,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const setPasswordButtons = document.querySelectorAll(".set-password-btn");
+        const setPasswordButtons = document.querySelectorAll(".other-btn");
         const modal = document.getElementById("setPasswordModal");
         const closeModal = document.querySelector(".close");
 
@@ -150,5 +150,36 @@
         }
         return `${size.toFixed(2)} ${units[unitIndex]}`;
     }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const deleteButtons = document.querySelectorAll(".delete-btn");
+        deleteButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const filename = this.dataset.filename;
+                if (confirm("Are you sure you want to delete this file?")) {
+                    const formData = new FormData();
+                    formData.append("filename", filename);
+                    fetch("{{ url_for('dashboard.delete_file') }}", {
+                        method: "POST",
+                        body: formData,
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                location.reload();
+                            } else {
+                                showNotification("Error: " + data.error, "error");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            showNotification("An error occurred while deleting the file", "error");
+                        });
+                }
+            });
+        });
+    });
 </script>
 {% endblock %}
