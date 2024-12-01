@@ -1,12 +1,14 @@
 import os
+
 from flask import Blueprint, abort, redirect, send_from_directory, url_for
 
 storage_bp = Blueprint("storage", __name__)
 uploads_folder = "uploads"
 
 
-from flask import request, flash, render_template
+from flask import flash, render_template, request
 from werkzeug.security import check_password_hash
+
 from database import db_handler
 
 

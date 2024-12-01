@@ -13,7 +13,6 @@ from flask import (
 )
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
-from werkzeug.security import generate_password_hash
 
 from database import db_handler
 from models.invite import Invite
