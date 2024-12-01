@@ -19,6 +19,7 @@ from .extensions import supported_extensions
 
 view_bp = Blueprint("view", __name__)
 uploads_folder = "uploads"
+from werkzeug.utils import secure_filename
 
 
 from werkzeug.security import check_password_hash
@@ -28,8 +29,10 @@ from werkzeug.security import check_password_hash
 
 @view_bp.route("/<filename>", methods=["GET", "POST"])
 def view(filename):
+    filename = secure_filename(filename)
     file_path = os.path.join(uploads_folder, filename)
-    if not os.path.exists(file_path):
+
+    if not os.path.exists(os.path.abspath(uploads_folder)):
         abort(404)
 
     file_info = db_handler.execute(
@@ -94,8 +97,10 @@ def render_file_view(filename, file_path, password=None):
 
 @view_bp.route("/raw/<filename>", methods=["GET", "POST"])
 def view_raw(filename):
+    filename = secure_filename(filename)
     file_path = os.path.join(uploads_folder, filename)
-    if not os.path.exists(file_path):
+
+    if not os.path.exists(os.path.abspath(uploads_folder)):
         abort(404)
 
     file_info = db_handler.execute(
