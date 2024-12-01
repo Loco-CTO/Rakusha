@@ -184,6 +184,28 @@ select:focus {
     background-color: rgba(255, 255, 255, 0.25);
 }
 
+.secondary-input {
+    width           : 280px;
+    background-color: rgb(13, 15, 18);
+    color           : rgb(255, 255, 255);
+    padding         : 10px 20px;
+    border          : none;
+    border-radius   : 8px;
+    font-size       : 12px;
+    font-family     : monospace;
+    box-sizing      : border-box;
+    transition      : background-color 0.3s ease;
+}
+
+.secondary-input::placeholder {
+    color: #999;
+}
+
+.secondary-input:focus {
+    outline         : none;
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
 option {
     background-color: rgb(22, 24, 29);
     color           : rgb(255, 255, 255);
@@ -542,6 +564,7 @@ option {
     box-sizing      : border-box;
 }
 
+
 .dashboard-item-title {
     font-size     : 18px;
     color         : var(--theme-color);
@@ -783,8 +806,8 @@ option {
 .password-container {
     max-width       : 400px;
     margin          : 100px auto;
-    padding         : 20px;
-    background-color: rgb(37, 40, 48);
+    padding         : 50px;
+    background-color: #0000005a;
     border-radius   : 10px;
     text-align      : center;
 }
@@ -796,35 +819,16 @@ option {
 
 .password-container .form-group {
     margin-bottom: 20px;
-}
 
-.password-container .form-group label {
-    display      : block;
-    margin-bottom: 5px;
-    color        : rgb(255, 255, 255);
 }
 
 .password-container .form-group input {
-    width           : 100%;
     padding         : 10px;
-    border          : 1px solid rgb(83, 90, 108);
+    width           : 100%;
+    border          : 0px;
     border-radius   : 5px;
-    background-color: rgb(13, 15, 18);
+    background-color: rgb(22, 24, 29);
     color           : rgb(255, 255, 255);
-}
-
-.password-container .general-button {
-    background-color: rgb(37, 40, 48);
-    color           : rgb(255, 255, 255);
-    padding         : 10px 20px;
-    border          : none;
-    border-radius   : 8px;
-    cursor          : pointer;
-    text-decoration : none;
-}
-
-.password-container .general-button:hover {
-    background-color: rgb(152, 131, 234);
 }
 
 /* Modal */
