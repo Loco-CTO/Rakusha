@@ -13,7 +13,7 @@ from flask import (
     session,
     url_for,
 )
-from werkzeug.security import check_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 
 from database import db_handler
