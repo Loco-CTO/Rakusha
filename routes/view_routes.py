@@ -13,7 +13,8 @@ from flask import (
     session,
     url_for,
 )
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 
 from database import db_handler
 from models.page_title import build_title
@@ -22,8 +23,6 @@ from .extensions import supported_extensions
 
 view_bp = Blueprint("view", __name__)
 uploads_folder = "uploads"
-from werkzeug.security import check_password_hash
-from werkzeug.utils import secure_filename
 
 
 @view_bp.route("/<filename>", methods=["GET", "POST"])
