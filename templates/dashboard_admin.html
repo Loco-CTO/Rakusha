@@ -28,7 +28,7 @@
 							<form method="POST" style="display: inline">
 								<button
 									type="button"
-									class="edit-btn"
+									class="other-btn"
 									data-user-id="{{ user.id }}"
 									data-username="{{ user.username }}"
 									data-email="{{ user.email }}"
@@ -131,7 +131,7 @@
 
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
-		const editButtons = document.querySelectorAll(".edit-btn");
+		const editButtons = document.querySelectorAll(".other-btn");
 		const modal = document.getElementById("editUserModal");
 		const closeModal = document.querySelector(".close");
 

@@ -264,7 +264,7 @@ def files():
     )[0][0]
 
     uploads = db_handler.execute(
-        f"SELECT original_name, filename, upload_time, size, views FROM uploads WHERE owner_identifier = ? AND original_name LIKE ? ORDER BY {sort_by} {sort_order} LIMIT ? OFFSET ?",
+        f"SELECT original_name, filename, upload_time, size, views, password_hash FROM uploads WHERE owner_identifier = ? AND original_name LIKE ? ORDER BY {sort_by} {sort_order} LIMIT ? OFFSET ?",
         (user.account_identifier, search_query, per_page, offset),
     )
 
@@ -272,8 +272,16 @@ def files():
     for upload in uploads:
         upload_time = datetime.datetime.strptime(upload[2], "%Y-%m-%d %H:%M:%S.%f")
         formatted_upload_time = upload_time.strftime("%Y-%m-%d %H:%M")
+        is_protected = "Yes" if upload[5] else "No"
         formatted_uploads.append(
-            (upload[0], upload[1], formatted_upload_time, upload[3], upload[4])
+            (
+                upload[0],
+                upload[1],
+                formatted_upload_time,
+                upload[3],
+                upload[4],
+                is_protected,
+            )
         )
 
     total_pages = (total_files + per_page - 1) // per_page
