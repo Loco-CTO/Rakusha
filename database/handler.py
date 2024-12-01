@@ -50,14 +50,16 @@ class DatabaseHandler:
         self.connection.commit()
         cursor.close()
 
-    def _update_table(self, table_name, columns_query):
-        existing_columns = self._get_existing_columns(table_name)
+    def _update_table(self, table_name, columns):
         cursor = self.connection.cursor()
-        for column, query in columns_query.items():
+        existing_columns = self._get_existing_columns(table_name)
+        for column, column_def in columns.items():
             if column not in existing_columns:
-                cursor.execute(query)
-        self.connection.commit()
-        cursor.close()
+                alter_query = (
+                    f"ALTER TABLE {table_name} ADD COLUMN {column} {column_def}"
+                )
+                cursor.execute(alter_query)
+                self.connection.commit()
 
     def _get_existing_columns(self, table_name):
         cursor = self.connection.cursor()
