@@ -33,8 +33,7 @@ def storage(filename):
                 return redirect(
                     url_for("storage.storage", filename=filename, password=password)
                 )
-            else:
-                flash("Incorrect password.", "error")
+            flash("Incorrect password.", "error")
         return render_template("password_view.html", filename=filename)
 
     return send_from_directory(uploads_folder, filename)
