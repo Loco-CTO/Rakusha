@@ -11,6 +11,7 @@ from flask import (
     url_for,
 )
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 
 from database import db_handler
 from models.page_title import build_title
@@ -19,7 +20,6 @@ from .extensions import supported_extensions
 
 view_bp = Blueprint("view", __name__)
 uploads_folder = "uploads"
-from werkzeug.utils import secure_filename
 
 
 @view_bp.route("/<filename>", methods=["GET", "POST"])
@@ -41,8 +41,7 @@ def view(filename):
             password = request.form.get("password")
             if check_password_hash(file_info[0], password):
                 return render_file_view(filename, file_path, password)
-            else:
-                flash("Incorrect password.", "error")
+            flash("Incorrect password.", "error")
         return render_template("password_view.html", filename=filename)
 
     return render_file_view(filename, file_path, password)
@@ -59,19 +58,19 @@ def render_file_view(filename, file_path, password=None):
             pagetitle=build_title("View Image"),
             filename=filename,
         )
-    elif extension in supported_extensions["video"]:
+    if extension in supported_extensions["video"]:
         return render_template(
             "video_view.html",
             pagetitle=build_title("View Video"),
             filename=filename,
         )
-    elif extension in supported_extensions["audio"]:
+    if extension in supported_extensions["audio"]:
         return render_template(
             "audio_view.html",
             pagetitle=build_title("View Audio"),
             filename=filename,
         )
-    elif (
+    if (
         extension in supported_extensions["text"]
         or extension in supported_extensions["code"]
     ):
@@ -87,8 +86,7 @@ def render_file_view(filename, file_path, password=None):
             file_content=file_content,
             line_numbers=line_numbers,
         )
-    else:
-        return send_file(file_path)
+    return send_file(file_path)
 
 
 @view_bp.route("/raw/<filename>", methods=["GET", "POST"])
@@ -114,8 +112,7 @@ def view_raw(filename):
                 return redirect(
                     url_for("view.view_raw", filename=filename, password=password)
                 )
-            else:
-                flash("Incorrect password.", "error")
+            flash("Incorrect password.", "error")
         return render_template("password_view.html", filename=filename)
 
     return send_file(file_path, mimetype="text/plain", as_attachment=False)
