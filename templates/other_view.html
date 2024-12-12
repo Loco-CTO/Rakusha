@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{{ pagetitle }}</title>
+		<link rel="icon" href="/static/favicon.png" type="image/png" />
+		<link
+			rel="stylesheet"
+			href="{{ url_for('static', filename='styles.css') }}"
+		/>
+	</head>
+	<body>
+		<div class="other-container">
+			<h2>{{ filename }}</h2>
+			<p>File type not supported for preview.</p>
+			<a href="/storage/{{ filename }}" class="general-button" download
+				>Download</a
+			>
+		</div>
+	</body>
+</html>
