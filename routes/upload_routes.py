@@ -10,19 +10,8 @@ from werkzeug.security import generate_password_hash
 from database import db_handler
 from models.user import User
 
-from .extensions import supported_extensions
-
 upload_bp = Blueprint("upload", __name__)
 storage_folder = "uploads"
-
-
-def allowed_file(filename):
-    if "." in filename:
-        extension = filename.rsplit(".", 1)[1].lower()
-        for category in supported_extensions.values():
-            if extension in category:
-                return True
-    return False
 
 
 def secure_string(length):
@@ -46,28 +35,27 @@ def sharex():
     file = request.files["file"]
     if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
-    if file and allowed_file(file.filename):
-        secret_key = request.form.get("secret_key")
-        user = User.get_by_secret_key(secret_key)
-        if not user:
-            return jsonify({"error": "Invalid secret key"}), 403
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(storage_folder, filename))
-        file_size = os.path.getsize(os.path.join(storage_folder, filename))
-        upload_time = datetime.datetime.now()
-        db_handler.execute(
-            "INSERT INTO uploads (original_name, filename, views, size, owner_identifier, upload_time) VALUES (?, ?, ?, ?, ?, ?)",
-            (
-                file.filename,
-                filename,
-                0,
-                file_size,
-                user.account_identifier,
-                upload_time,
-            ),
-        )
-        return jsonify({"url": url_for("view.view", filename=filename)}), 201
-    return jsonify({"error": "File not allowed"}), 400
+
+    secret_key = request.form.get("secret_key")
+    user = User.get_by_secret_key(secret_key)
+    if not user:
+        return jsonify({"error": "Invalid secret key"}), 403
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(storage_folder, filename))
+    file_size = os.path.getsize(os.path.join(storage_folder, filename))
+    upload_time = datetime.datetime.now()
+    db_handler.execute(
+        "INSERT INTO uploads (original_name, filename, views, size, owner_identifier, upload_time) VALUES (?, ?, ?, ?, ?, ?)",
+        (
+            file.filename,
+            filename,
+            0,
+            file_size,
+            user.account_identifier,
+            upload_time,
+        ),
+    )
+    return jsonify({"url": url_for("view.view", filename=filename)}), 201
 
 
 @upload_bp.route("/dashboard", methods=["POST"])
@@ -78,25 +66,24 @@ def dashboard():
     file = request.files["file"]
     if file.filename == "":
         return jsonify({"error": "No selected file"}), 400
-    if file and allowed_file(file.filename):
-        user = current_user
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(storage_folder, filename))
-        file_size = os.path.getsize(os.path.join(storage_folder, filename))
-        upload_time = datetime.datetime.now()
-        password = request.form.get("password")
-        password_hash = generate_password_hash(password) if password else None
-        db_handler.execute(
-            "INSERT INTO uploads (original_name, filename, views, size, owner_identifier, upload_time, password_hash) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            (
-                file.filename,
-                filename,
-                0,
-                file_size,
-                user.account_identifier,
-                upload_time,
-                password_hash,
-            ),
-        )
-        return jsonify({"url": url_for("view.view", filename=filename)}), 201
-    return jsonify({"error": "File not allowed"}), 400
+
+    user = current_user
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(storage_folder, filename))
+    file_size = os.path.getsize(os.path.join(storage_folder, filename))
+    upload_time = datetime.datetime.now()
+    password = request.form.get("password")
+    password_hash = generate_password_hash(password) if password else None
+    db_handler.execute(
+        "INSERT INTO uploads (original_name, filename, views, size, owner_identifier, upload_time, password_hash) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        (
+            file.filename,
+            filename,
+            0,
+            file_size,
+            user.account_identifier,
+            upload_time,
+            password_hash,
+        ),
+    )
+    return jsonify({"url": url_for("view.view", filename=filename)}), 201
