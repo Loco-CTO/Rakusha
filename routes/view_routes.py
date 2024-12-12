@@ -34,15 +34,20 @@ def view(filename):
     file_info = db_handler.execute(
         "SELECT password_hash FROM uploads WHERE filename = ?",
         (filename,),
-    )[0]
+    )
 
-    if file_info[0]:
-        if request.method == "POST":
-            password = request.form.get("password")
-            if check_password_hash(file_info[0], password):
-                return render_file_view(filename, file_path, password)
-            flash("Incorrect password.", "error")
-        return render_template("password_view.html", filename=filename)
+    if not file_info:
+        pass
+    else:
+        file_info = file_info[0]
+
+        if file_info[0]:
+            if request.method == "POST":
+                password = request.form.get("password")
+                if check_password_hash(file_info[0], password):
+                    return render_file_view(filename, file_path, password)
+                flash("Incorrect password.", "error")
+            return render_template("password_view.html", filename=filename)
 
     return render_file_view(filename, file_path, password)
 
@@ -86,7 +91,12 @@ def render_file_view(filename, file_path, password=None):
             file_content=file_content,
             line_numbers=line_numbers,
         )
-    return send_file(file_path)
+    else:
+        return render_template(
+            "other_view.html",
+            pagetitle=build_title("View File"),
+            filename=filename,
+        )
 
 
 @view_bp.route("/raw/<filename>", methods=["GET", "POST"])

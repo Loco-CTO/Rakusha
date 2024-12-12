@@ -27,6 +27,7 @@ pre {
 .error-container,
 .image-container,
 .video-container,
+.other-container,
 .text-container {
     position        : relative;
     width           : 90%;
@@ -38,6 +39,12 @@ pre {
 
 .audio-container {
     max-width: 600px;
+}
+
+.other-container {
+    max-width: 500px;
+    padding  : 50px 40px 80px 40px;
+    margin   : 0;
 }
 
 .error-container {
