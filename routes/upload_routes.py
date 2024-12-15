@@ -55,7 +55,10 @@ def sharex():
             upload_time,
         ),
     )
-    return jsonify({"url": url_for("view.view", filename=filename)}), 201
+    return (
+        jsonify({"url": url_for("view.view", filename=filename, _external=True)}),
+        201,
+    )
 
 
 @upload_bp.route("/dashboard", methods=["POST"])
@@ -86,4 +89,8 @@ def dashboard():
             password_hash,
         ),
     )
-    return jsonify({"url": url_for("view.view", filename=filename)}), 201
+
+    return (
+        jsonify({"url": url_for("view.view", filename=filename, _external=True)}),
+        201,
+    )
