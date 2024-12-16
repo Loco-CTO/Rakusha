@@ -91,12 +91,11 @@ def render_file_view(filename, file_path, password=None):
             file_content=file_content,
             line_numbers=line_numbers,
         )
-    else:
-        return render_template(
-            "other_view.html",
-            pagetitle=build_title("View File"),
-            filename=filename,
-        )
+    return render_template(
+        "other_view.html",
+        pagetitle=build_title("View File"),
+        filename=filename,
+    )
 
 
 @view_bp.route("/raw/<filename>", methods=["GET", "POST"])
