@@ -49,7 +49,6 @@ def login_redirect():
     return redirect(url_for("auth.login"))
 
 
-
 app.register_blueprint(auth_bp, url_prefix="/auth")
 app.register_blueprint(upload_bp, url_prefix="/upload")
 app.register_blueprint(view_bp, url_prefix="/view")
