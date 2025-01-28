@@ -1,8 +1,9 @@
+import logging
+
 from waitress import serve
 
-import logging
-from models.user import User, create_account
 from app import app
+from models.user import User, create_account
 
 
 def create_admin_account():
