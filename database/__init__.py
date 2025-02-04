@@ -1,4 +1,7 @@
+import os
+
 from .handler import DatabaseHandler
+from constant import BASE_DIR
 
 db_handler = DatabaseHandler(
     db_type="sqlite",
@@ -65,7 +68,7 @@ db_handler = DatabaseHandler(
             },
         }
     },
-    db_file="sqlite/xflask.db",
+    db_file=os.path.join(BASE_DIR, "sqlite", "xflask.db"),
 )
 
 db_handler.create_tables()

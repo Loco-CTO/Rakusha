@@ -13,13 +13,14 @@ from flask import (
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 
+from constant import BASE_DIR
 from database import db_handler
 from models.page_title import build_title
 
 from .extensions import supported_extensions
 
 view_bp = Blueprint("view", __name__)
-uploads_folder = "uploads"
+uploads_folder = os.path.join(BASE_DIR, "uploads")
 
 
 @view_bp.route("/<filename>", methods=["GET", "POST"])

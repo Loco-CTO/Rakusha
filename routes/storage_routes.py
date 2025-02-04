@@ -12,10 +12,11 @@ from flask import (
 )
 from werkzeug.security import check_password_hash
 
+from constant import BASE_DIR
 from database import db_handler
 
 storage_bp = Blueprint("storage", __name__)
-uploads_folder = "uploads"
+uploads_folder = os.path.join(BASE_DIR, "uploads")
 
 
 @storage_bp.route("/<filename>", methods=["GET", "POST"])

@@ -7,11 +7,12 @@ from flask import Blueprint, jsonify, request, url_for
 from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 
+from constant import BASE_DIR
 from database import db_handler
 from models.user import User
 
 upload_bp = Blueprint("upload", __name__)
-storage_folder = "uploads"
+storage_folder = os.path.join(BASE_DIR, "uploads")
 
 
 def secure_string(length):

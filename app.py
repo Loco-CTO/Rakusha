@@ -5,11 +5,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 import os
+from constant import BASE_DIR
 
-if not os.path.exists("uploads"):
-    os.mkdir("uploads")
-if not os.path.exists("sqlite"):
-    os.mkdir("sqlite")
+if not os.path.exists(os.path.join(BASE_DIR, "uploads")):
+    os.mkdir(os.path.join(BASE_DIR, "uploads"))
+if not os.path.exists(os.path.join(BASE_DIR, "sqlite")):
+    os.mkdir(os.path.join(BASE_DIR, "sqlite"))
 
 from flask import Flask, redirect, url_for
 from flask_login import LoginManager
