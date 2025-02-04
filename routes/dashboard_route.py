@@ -15,11 +15,11 @@ from flask_login import current_user, login_required
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 
+from constant import BASE_DIR
 from database import db_handler
 from models.invite import Invite
 from models.page_title import build_title
 from models.user import User
-from constant import BASE_DIR
 
 dashboard_bp = Blueprint("dashboard", __name__)
 

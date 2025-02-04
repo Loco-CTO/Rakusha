@@ -1,7 +1,8 @@
 import os
 
-from .handler import DatabaseHandler
 from constant import BASE_DIR
+
+from .handler import DatabaseHandler
 
 db_handler = DatabaseHandler(
     db_type="sqlite",
